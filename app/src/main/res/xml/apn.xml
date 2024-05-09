@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApnArray>
+    <apn
+        apn="internet.be"
+        carrier="BeMobile"
+        mcc="652"
+        mnc="04"
+        protocol="IPv4"
+        roaming_protocol="IPv4"
+        type="default" />
+
+    <apn
+        apn="internet.orange.co.bw"
+        carrier="Orange Botswana"
+        mcc="652"
+        mnc="02"
+        protocol="IPv4"
+        roaming_protocol="IPv4"
+        type="default" />
+
+    <apn
+        apn="internet.mascom"
+        carrier="Mascom Internet"
+        mcc="652"
+        mnc="01"
+        protocol="IPv4"
+        roaming_protocol="IPv4"
+        type="default" />
+
+
+</ApnArray>
