@@ -1,7 +1,5 @@
 package com.wizarpos.addapn;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -14,6 +12,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.wizarpos.wizarviewagentassistant.aidl.IAPNManagerService;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -25,47 +25,6 @@ public class MainActivity extends AppCompatActivity {
     private final String Tag = "add_apn";
     private TextView mAddApn, mApnMessage, mStatus;
     private IAPNManagerService iapnManagerService;
-    private SharePreferencesHelper sharePreferencesHelper;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        sharePreferencesHelper = SharePreferencesHelper.getInstance(getApplicationContext());
-        initParams();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        bindServer();
-    }
-
-    /**
-     * clear apn
-     *
-     * @param view
-     */
-    public void clearApn(View view) {
-        try {
-            if (iapnManagerService == null) {
-                return;
-            }
-            boolean retval = iapnManagerService.clear();
-            mStatus.setText("Clear apn staus：" + retval);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void bindServer() {
-        Intent intent = new Intent();
-        ComponentName componentName = new ComponentName("com.wizarpos.wizarviewagentassistant",
-                "com.wizarpos.wizarviewagentassistant.APNManagerService");
-        intent.setComponent(componentName);
-        bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
-    }
-
     ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
@@ -80,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initParams();
+    }
+
     private void initParams() {
         mAddApn = findViewById(R.id.add_apn);
         mApnMessage = findViewById(R.id.apn_message);
@@ -92,8 +58,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (apnItems[0] != null && apnItems[0].size() > 0) {
+                    Log.d("onClick", "onClick0");
                     for (int pos = 0; pos < apnItems[0].size(); pos++) {
                         try {
+                            Log.d("onClick", "onClick1");
+                            Log.d("onClick", apnItems[0].get(pos).getCarrier() + " " +
+                                    apnItems[0].get(pos).getApn() + " " +
+                                    apnItems[0].get(pos).getMcc() + " " +
+                                    apnItems[0].get(pos).getMnc());
                             String status = iapnManagerService.addByAllArgs(
                                     apnItems[0].get(pos).getCarrier(),
                                     apnItems[0].get(pos).getApn(),
@@ -115,16 +87,13 @@ public class MainActivity extends AppCompatActivity {
                                     null,
                                     null
                             );
+                            Log.d("onClick", "onClick2");
                             mStatus.setText("add apn staus：" + status);
-                            if (status.equals("succeed")) {
-                                sharePreferencesHelper.saveString(apnItems[0].get(pos).getCarrier(), apnItems[0].get(pos).toApnString());
-                            }
                             Log.e(Tag, "add apn staus = " + status);
                         } catch (RemoteException e) {
                             e.printStackTrace();
                         }
                     }
-                    apnItems[0] = getApnItems();
                 } else {
                     mStatus.setText("No APN needs to be added!");
                 }
@@ -152,12 +121,8 @@ public class MainActivity extends AppCompatActivity {
             if (datas != null && datas.size() > 0) {
                 StringBuilder message = new StringBuilder();
                 for (int pos = 0; pos < datas.size(); pos++) {
-                    if (datas.get(pos).toApnString().equals(sharePreferencesHelper.getString(datas.get(pos).getCarrier()))) {
-                        message.append("APN(Already exist): " + datas.get(pos).toApnString() + "\n\n");
-                    } else {
-                        message.append("APN: " + datas.get(pos).toApnString() + "\n\n");
-                        newDatas.add(datas.get(pos));
-                    }
+                    message.append("APN: " + datas.get(pos).toApnString() + "\n\n");
+                    newDatas.add(datas.get(pos));
                 }
                 mApnMessage.setText(message);
             }
@@ -192,6 +157,37 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         if (mServiceConnection != null) {
             unbindService(mServiceConnection);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bindServer();
+    }
+
+    private void bindServer() {
+        Intent intent = new Intent();
+        ComponentName componentName = new ComponentName("com.wizarpos.wizarviewagentassistant",
+                "com.wizarpos.wizarviewagentassistant.APNManagerService");
+        intent.setComponent(componentName);
+        bindService(intent, mServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    /**
+     * clear apn
+     *
+     * @param view
+     */
+    public void clearApn(View view) {
+        try {
+            if (iapnManagerService == null) {
+                return;
+            }
+            boolean retval = iapnManagerService.clear();
+            mStatus.setText("Clear apn staus：" + retval);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
