@@ -1,29 +1,39 @@
 package com.cloudpos.addapn;
 
+import android.app.AlertDialog;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.alibaba.fastjson.JSONObject;
 import com.wizarpos.wizarviewagentassistant.aidl.IAPNManagerService;
 
 import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     private final String Tag = "add_apn";
     private TextView mAddApn, mApnMessage, mStatus;
+    private Button setSelected, mAddMccMnc, mAdd;
+    private ArrayList<APNMode>[] apnItems;
     private IAPNManagerService iapnManagerService;
     ServiceConnection mServiceConnection = new ServiceConnection() {
 
@@ -38,35 +48,21 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initParams();
-    }
-
-    private void initParams() {
-        mAddApn = findViewById(R.id.add_apn);
-        mApnMessage = findViewById(R.id.apn_message);
-        mStatus = findViewById(R.id.status);
-        mApnMessage.setMovementMethod(ScrollingMovementMethod.getInstance());
-        final ArrayList<APNMode>[] apnItems = new ArrayList[]{getApnItems()};
-
-
-        mAddApn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (apnItems[0] != null && apnItems[0].size() > 0) {
-                    Log.d("onClick", "onClick0");
-                    for (int pos = 0; pos < apnItems[0].size(); pos++) {
-                        try {
-                            Log.d("onClick", "onClick1");
-                            Log.d("onClick", apnItems[0].get(pos).getCarrier() + " " +
-                                    apnItems[0].get(pos).getApn() + " " +
-                                    apnItems[0].get(pos).getMcc() + " " +
-                                    apnItems[0].get(pos).getMnc());
-                            String status = iapnManagerService.addByAllArgs(
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (apnItems[0] != null && apnItems[0].size() > 0) {
+                Log.d("onClick", "onClick0");
+                for (int pos = 0; pos < apnItems[0].size(); pos++) {
+                    try {
+                        Log.d("onClick", "onClick1");
+                        Log.d("onClick", apnItems[0].get(pos).getCarrier() + " " +
+                                apnItems[0].get(pos).getApn() + " " +
+                                apnItems[0].get(pos).getMcc() + " " +
+                                apnItems[0].get(pos).getMnc());
+                        String status = "";
+                        if (v.getId() == R.id.add_apn) {
+                            status = iapnManagerService.addByAllArgs(
                                     apnItems[0].get(pos).getCarrier(),
                                     apnItems[0].get(pos).getApn(),
                                     apnItems[0].get(pos).getMcc(),
@@ -87,18 +83,106 @@ public class MainActivity extends AppCompatActivity {
                                     null,
                                     null
                             );
-                            Log.d("onClick", "onClick2");
-                            mStatus.setText("add apn staus：" + status);
-                            Log.e(Tag, "add apn staus = " + status);
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
+                        } else if (v.getId() == R.id.addByMCCAndMNC) {
+                            status = iapnManagerService.addByMCCAndMNC(
+                                    apnItems[0].get(pos).getCarrier(),
+                                    apnItems[0].get(pos).getApn(),
+                                    apnItems[0].get(pos).getMcc(),
+                                    apnItems[0].get(pos).getMnc());
+                        } else if (v.getId() == R.id.add) {
+                            status = iapnManagerService.add(
+                                    apnItems[0].get(pos).getCarrier(),
+                                    apnItems[0].get(pos).getApn());
                         }
+                        Log.d("onClick", "onClick2");
+                        mStatus.setText("add apn staus：" + status);
+                        mApnMessage.append("add apn staus：" + status);
+                        Log.e(Tag, "add apn staus = " + status);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
                     }
-                } else {
-                    mStatus.setText("No APN needs to be added!");
+                }
+            } else {
+                mStatus.setText("No APN needs to be added!");
+            }
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        initParams();
+    }
+
+    private void initParams() {
+        mAddApn = findViewById(R.id.add_apn);
+        mAddMccMnc = findViewById(R.id.addByMCCAndMNC);
+        mAdd = findViewById(R.id.add);
+        setSelected = findViewById(R.id.setSelected);
+        mApnMessage = findViewById(R.id.apn_message);
+        mApnMessage.setMovementMethod(ScrollingMovementMethod.getInstance());
+        mApnMessage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                int lines = mApnMessage.getHeight();
+                int lastLine = mApnMessage.getLayout().getHeight();
+                Log.i("total lines: ", "" + lines);
+                Log.i("text lines: ", "" + lastLine);
+                if (lastLine >= lines) {
+                    mApnMessage.scrollTo(0, mApnMessage.getLayout().getLineTop(mApnMessage.getLineCount()) - mApnMessage.getHeight());
                 }
             }
         });
+        mStatus = findViewById(R.id.status);
+        mApnMessage.setMovementMethod(ScrollingMovementMethod.getInstance());
+        ArrayList<APNMode> modeList = getApnItems();
+        apnItems = new ArrayList[]{modeList};
+        mAddApn.setOnClickListener(listener);
+        mAddMccMnc.setOnClickListener(listener);
+        mAdd.setOnClickListener(listener);
+        setSelected.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Select an Option");
+                List<String> names = new ArrayList<>(modeList.size());
+                String[] options = new String[modeList.size()];
+                for (APNMode mode : modeList) {
+                    names.add(mode.getCarrier());
+                }
+                names.toArray(options);
+                builder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            if (iapnManagerService == null) {
+                                return;
+                            }
+                            boolean result = iapnManagerService.setSelected(options[which]);
+                            mApnMessage.append("Set selected apn ：" + options[which] + " " + result + "\n");
+                            mStatus.setText("Set selected apn staus：" + result);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
     }
 
     private ArrayList<APNMode> getApnItems() {
@@ -186,6 +270,40 @@ public class MainActivity extends AppCompatActivity {
             }
             boolean retval = iapnManagerService.clear();
             mStatus.setText("Clear apn staus：" + retval);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * get selected apn
+     *
+     * @param view
+     */
+    public void getSelected(View view) {
+        try {
+            if (iapnManagerService == null) {
+                return;
+            }
+            Map result = iapnManagerService.getSelected();
+            mApnMessage.append("Get selected apn ：" + JSONObject.toJSONString(result) + "\n");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * set selected apn
+     *
+     * @param view
+     */
+    public void setSelected(View view) {
+        try {
+            if (iapnManagerService == null) {
+                return;
+            }
+            boolean result = iapnManagerService.setSelected("BeMobile");
+            mStatus.setText("Set selected apn staus：" + result);
         } catch (Exception e) {
             e.printStackTrace();
         }
