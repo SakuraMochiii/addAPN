@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.wizarpos.addapn"
+    package="com.cloudpos.addapn"
     >
 
     <uses-permission android:name="android.permission.INTERNET"></uses-permission>
@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AddAPN">
         <activity
-            android:name=".MainActivity"
+            android:name="com.cloudpos.addapn.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

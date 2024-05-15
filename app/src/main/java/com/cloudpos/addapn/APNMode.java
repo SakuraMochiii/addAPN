@@ -1,4 +1,4 @@
-package com.wizarpos.addapn;
+package com.cloudpos.addapn;
 
 public class APNMode {
     private String carrier;

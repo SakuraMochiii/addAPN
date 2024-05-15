@@ -1,4 +1,4 @@
-package com.wizarpos.addapn;
+package com.cloudpos.addapn;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.wizarpos.addapn;
+package com.cloudpos.addapn;
 
 import android.content.ComponentName;
 import android.content.Intent;
