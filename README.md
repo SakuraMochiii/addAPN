@@ -9,8 +9,7 @@ must import the package and add permissions to the Android manifest file.
 
 Please note:
 Insert the SIM card first. 
-The MCC, MNC should be the same as SIM card inserted
-
+The MCC, MNC should be the same as the inserted SIM card.
 Permissions: 
 The application declares the following permissions in the manifest: 
 com.wizarpos.permission.WRITE_APN_SETTINGS
