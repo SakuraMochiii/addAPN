@@ -17,7 +17,7 @@ com.wizarpos.permission.WRITE_APN_SETTINGS
 
 ## Features
 
-- **AddByAllArgs**: Add an APN setting. Do not set all parameters to Null.
+- **AddByAllArgs**: Add an APN setting. Do not set any parameters to Null.
 - **Add**: String add(String name, String apn);
 - **AddByMCCAndMNC**:  String addByMCCAndMNC(String name, String apn, String mcc, String mnc); Add an
   APN setting.
