@@ -8,6 +8,9 @@ interface IAPNManagerService{
 	String add(String name, String apn);
 	String addByMCCAndMNC(String name, String apn, String mcc, String mnc);
 	boolean setSelected(String name);
-	boolean clear();
-	Map getSelected();
+    boolean clear();
+    boolean clearWithSlot(int slot);
+    Map getSelected();
+    List query(String columnName, String value);
+    List queryByName(String value);
 }

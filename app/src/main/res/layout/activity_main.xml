@@ -27,97 +27,164 @@
         android:gravity="center"
         android:textSize="20sp" />
 
-    <LinearLayout
-        android:id="@+id/btnLay2"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/status"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/add_apn"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_gravity="left"
-            android:layout_marginRight="30dp"
-            android:text="Add APN AllArgs"
-            android:textAllCaps="false" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/add"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_gravity="right"
-            android:layout_marginLeft="30dp"
-            android:text="Add APN"
-            android:textAllCaps="false" />
+            <LinearLayout
+                android:id="@+id/btnLay2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/status"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/add_apn"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="30dp"
+                    android:text="Add APN AllArgs"
+                    android:textAllCaps="false" />
 
-    <LinearLayout
-        android:id="@+id/btnLay3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/status"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="1">
+                <Button
+                    android:id="@+id/add"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="30dp"
+                    android:text="Add APN"
+                    android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/addByMCCAndMNC"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_gravity="left"
-            android:layout_marginHorizontal="30dp"
-            android:text="AddByMCCAndMNC"
-            android:textAllCaps="false" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/setSelected"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_gravity="right"
-            android:layout_marginHorizontal="30dp"
-            android:onClick="setSelected"
-            android:text="Set Selected"
-            android:textAllCaps="false" />
+            <LinearLayout
+                android:id="@+id/btnLay3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/status"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/addByMCCAndMNC"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="left"
+                    android:layout_marginHorizontal="30dp"
+                    android:text="AddByMCCAndMNC"
+                    android:textAllCaps="false" />
 
-    <LinearLayout
-        android:id="@+id/btnLay4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/status"
-        android:layout_marginTop="5dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:weightSum="1">
+                <Button
+                    android:id="@+id/setSelected"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="right"
+                    android:layout_marginHorizontal="30dp"
+                    android:text="Set Selected"
+                    android:textAllCaps="false" />
 
-        <Button
-            android:id="@+id/getSelected"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="30dp"
-            android:onClick="getSelected"
-            android:text="Get Selected"
-            android:textAllCaps="false" />
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/clean_apn"
-            android:layout_width="150dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center"
-            android:layout_marginHorizontal="30dp"
-            android:onClick="clearApn"
-            android:text="Clear APN"
-            android:textAllCaps="false" />
+            <LinearLayout
+                android:id="@+id/btnLay4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/status"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/getSelected"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="30dp"
+                    android:onClick="getSelected"
+                    android:text="Get Selected"
+                    android:textAllCaps="false" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnLay5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btnLay4"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/clean_apn"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="30dp"
+                    android:onClick="clearApn"
+                    android:text="Clear APN"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/cleanSlot"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="30dp"
+                    android:onClick="clearWithSlot"
+                    android:text="ClearWithSlot"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnLay6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/status"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <Button
+                    android:id="@+id/query"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="30dp"
+                    android:onClick="queryAll"
+                    android:text="Query"
+                    android:textAllCaps="false" />
+
+                <Button
+                    android:id="@+id/queryByName"
+                    android:layout_width="150dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center"
+                    android:layout_marginHorizontal="30dp"
+                    android:onClick="queryByName"
+                    android:text="QueryByName"
+                    android:textAllCaps="false" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
